@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap 4.5 CSS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"> 
+      
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+      crossorigin="" />
+
+    <!-- Bootstrap JS Requirements -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <!-- Mapbox -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script> 
+
+      <!-- D3 -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    
+  </head>
+
+  <body>
+    
+    <div class="container-scroller">
+      <!--Nav-Bar-->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid"> 
+            <div class="collapse navbar-collapse" id="navbar20">
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item"> <a class="nav-link" href="#">About</a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="#">Contactus</a> </li>
+                </ul>
+                <p class="d-none d-md-block lead mb-0 text-white"> <i class="fa fa-heart-o"></i> <b>Predicting House Prices</b> </p>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item mx-1"> <a class="nav-link" href="https://github.com/Robie94/price_detector"> <i class="fa fa-github fa-fw fa-lg"></i> </a> </li>
+                </ul>
+            </div>
+        </div>
+      </nav>
+      
+
+
+      <!--Intro-->
+      <div class="container">
+        <div class="card-body text-center" > 
+            <img src="https://cdn.iconscout.com/icon/free/png-256/house-1495589-1267760.png">
+            <h2>Ready to buy a house?</h2>
+            <h4 class="text-danger">Find the price of the house of your dreams!</h4> 
+        </div>
+      </div>
+      <div id="space"></div>
+
+
+    
+      <!--Form selection for data submission-->
+      <div class="container">
+        <div class="row ">
+          <div class="col-md-4">
+            <aside class="filters">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <form action="{{ url_for('gfg')}}" method="post">
+                    <div class="form-group">
+                      <ul class="list-group" id="filters">
+                        <li class="filter list-group-item">
+                          <label>Type</label>
+                          <input class="form-control" type="text" placeholder="casa/departamento" name="type">
+                          <datalist id="types">
+                            <option value="Casa">
+                            <option value="Departamento">
+                          </datalist>
+                        </li>
+                        <li class="filter list-group-item">
+                          <label>Number of rooms</label>
+                          <input class="form-control" type="text" placeholder="1" name="nrooms">
+                        </li>
+                        <li class="filter list-group-item">
+                          <label>Number of bathrooms</label>
+                          <input class="form-control" type="text" placeholder="1" name="nbathrooms">
+                        </li>
+                        <li class="filter list-group-item">
+                          <label>Number of parkinglots</label>
+                          <input class="form-control" type="text" placeholder="1" name="nparkings">
+                        </li>
+                        <li class="filter list-group-item">
+                          <label>Square meters</label>
+                          <input class="form-control" type="text" placeholder="70" name="totmeters">
+                        </li>
+                        <li class="filter list-group-item">
+                          <label>Colonia</label>
+                          <input class="form-control" type="text" placeholder="Nápoles" name="colonia">
+                        </li> 
+                        <li class="filter list-group-item">
+                          <label>Alcaldia</label>
+                          <input list="alcaldias" name="alcaldia">
+                          <datalist id="alcaldias">
+                            <option value="ALVARO OBREGON">
+                            <option value="AZCAPOTZALCO">
+                            <option value="BENITO JUAREZ">
+                            <option value="COYOACAN">
+                            <option value="CUAJIMALPA DE MORELOS">
+                            <option value="CUAUHTEMOC">
+                            <option value="GUSTAVO A. MADERO">
+                            <option value="IZTACALCO">
+                            <option value="IZTAPALAPA">
+                            <option value="LA MAGDALENA CONTRERAS">
+                            <option value="MIGUEL HIDALGO">
+                            <option value="MILPA ALTA">
+                            <option value="TLAHUAC">
+                            <option value="TLALPAN">
+                            <option value="VENUSTIANO CARRANZA">
+                            <option value="XOCHIMILCO">
+                          </datalist>
+                        </li>   
+                      </ul>
+                    </div>
+                    <button id="filter-btn" type="submit" class="btn btn-primary btn-icon-text">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </aside>
+            <div id="space"></div>
+          </div>
+
+          <!--Prediction Result and Map--> 
+          <div class="col-md-8">
+            <div class="row ">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body text-center" >
+                    <h2>Your square meter price is:</h2> 
+                    <h2 class="text-danger">{{ prediction }}</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <br>
+                <div id="map"></div>                          
+              </div>
+            </div>
+          </div>
+      
+    
+          
+      <!--Graphs-->        
+      <div class="container-fluid">
+        <!--Form selection for houses/apartment-->
+        <div id="space"></div>
+        <div class="row ">
+          <div class="col-md-6" >
+            <div class="select">
+              <h5>Select:</h5>
+              <select id="selDataset"  style="width: 200px" > 
+                <option selected>Houses</option>
+                <option value="Apartments">Apartments</option>
+              </select>
+              <div id="space"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row ">
+          <div class="col-md-6" >
+            <div class="card">
+              <div class="card-body text-center" >  
+                <h3>Price vs Bathrooms</h3> 
+                <div id="bathrooms"></div>
+              </div>
+            </div> 
+          </div>
+          <div class="col-md-6" >
+            <div class="card">
+              <div class="card-body text-center" >  
+                <h3>Price vs Bedrooms</h3> 
+                <div id="bedrooms"></div>
+              </div>
+             </div>
+          </div>
+        </div> 
+
+        <div id="space"></div>
+
+        <div class="row ">
+          <div class="col-md-6" >
+            <div class="card">
+              <div class="card-body text-center" >  
+                <h3>Price vs Parkinglots</h3> 
+                <div id="parkinglots"></div>
+              </div>
+            </div> 
+          </div>
+          <div class="col-md-6" >
+            <div class="card">
+              <div class="card-body text-center" >  
+                <h3>Price vs Distance to Subway</h3> 
+                <div id="distance"></div>
+              </div>
+             </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
+  <!--D3-->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+  <!--Plotly-->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- API Key -->
+    <script type="text/javascript" src="Static/js/config.js"></script>
+  <!-- Our JavaScript -->
+    <!-- <script type="text/javascript" src="Static/js/logic.js"></script> -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/logic.js')}}"></script>
+  <!-- Our CSS -->
+   <!-- <link rel="stylesheet" type="text/css" href="Static/css/style.css"> -->
+  <link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename='css/style.css')}}">
+
+    
+   
+  </body>
+</html>
