@@ -38,8 +38,7 @@ var bedrooms=[]
 var parkinglots=[]
 var distances=[]
 
-d3.csv("03_data.csv").then(function(data) {
-  
+d3.csv("../04_data_total_clean.csv").then(function(data) {
 
   // Grab values from the response json object to build the plots
   data.forEach(d => {

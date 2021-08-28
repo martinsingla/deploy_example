@@ -36,10 +36,10 @@ def gfg():
             'LA MAGDALENA CONTRERAS': 0, 
             'MIGUEL HIDALGO': 0, 
             'MILPA ALTA': 0,
-             'TLAHUAC': 0, 
-             'TLALPAN': 0, 
-             'VENUSTIANO CARRANZA': 0, 
-             'XOCHIMILCO': 0
+            'TLAHUAC': 0, 
+            'TLALPAN': 0, 
+            'VENUSTIANO CARRANZA': 0, 
+            'XOCHIMILCO': 0
         }
         dict_alcaldia[alcaldia] = 1
 
@@ -49,11 +49,11 @@ def gfg():
         }
         dict_tipo[type] = 1
 
-        predictors = np.concatenate((characteristics, np.array(list(dict_alcaldia.values())), np.array(list(dict_tipo.values()))))
+        predictors = [np.concatenate((characteristics, np.array(list(dict_alcaldia.values())), np.array(list(dict_tipo.values()))))]
 
         model_prediction = model.predict(predictors)
         
-        prediction = 'MXN $' + str(round(model_prediction,1))
+        prediction = 'MXN $' + str(round(model_prediction[0],1))
         
         return render_template("index.html", prediction = prediction)
     
